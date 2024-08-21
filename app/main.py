@@ -8,8 +8,8 @@ def main():
     try:
         client_socket, address = server_socket.accept()
         print(f"Client connected from {address}")
-        # client.send('THank you'.encode())
-        client_socket.sendall(b"HTTP/1.0 200 OK\r\n\r\n")
+
+        client_socket.sendall(b"HTTP/1.0 200 OK\r\n\r\n") # .encode() at end of string acts same as 'b' prefix
 
     except KeyboardInterrupt:
         print("Server stopped")
