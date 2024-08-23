@@ -27,9 +27,9 @@ def main():
 
     if request_target == "/":
       client_socket.sendall(b"HTTP/1.1 200 OK\r\n\r\n") # .encode() at end of string acts same as 'b' prefix
-    elif request_target == "/user_agent":
+    elif request_target == "/user-agent":
       response_body = request_headers["User-Agent"]
-      content_length = len(return_string.encode())
+      content_length = len(response_body.encode())
       response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {content_length}\r\n\r\n{response_body}".encode()
     elif request_target.split("/")[1:][0] == "echo":
       return_string = request_target.split("/")[1:][1]
