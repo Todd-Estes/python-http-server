@@ -1,18 +1,31 @@
 import socket
+import io
 
 def main():
     print("Logs from your program will appear here!")
 
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
-    # while True:
-
     client_socket, address = server_socket.accept()
-    request = client_socket.recv(4096)
 
-    request_line = request.split(b'\r\n')[0].decode('utf-8') # Decode the bytes to a string
+    # Create a file-like object from the socket
+    request_file = client_socket.makefile('rb')
+
+    request_line = request_file.readline().decode('utf-8').strip() # Decode the bytes to a string
+
+    print(f"REQUEST LINE {request_line}")
     method, request_target, _ = request_line.split(' ') # Split the request line
     print(f"Request Method: {method}")
     print(f"Request Target: {request_target}")
+
+    # create request headers hash
+    request_headers = {}
+    while True:
+      print("in header loop")
+      line = request_file.readline().decode('utf-8').strip()
+      if not line: break
+      header_key, header_value = line.split(': ')
+      request_headers[header_key] = header_value
+
 
     if request_target == "/":
       client_socket.sendall(b"HTTP/1.1 200 OK\r\n\r\n") # .encode() at end of string acts same as 'b' prefix
