@@ -9,10 +9,8 @@ def main():
           client_socket, address = server_socket.accept()
           print(f"Client connected from {address}")
           data = client_socket.recv(4096)
-          # Decode the bytes to a string
-          request_line = data.split(b'\r\n')[0].decode('utf-8')
-          # Split the request line
-          method, request_target, _ = request_line.split(' ')
+          request_line = data.split(b'\r\n')[0].decode('utf-8') # Decode the bytes to a string
+          method, request_target, _ = request_line.split(' ') # Split the request line
 
           if request_target == "/":
             client_socket.sendall(b"HTTP/1.1 200 OK\r\n\r\n") # .encode() at end of string acts same as 'b' prefix
