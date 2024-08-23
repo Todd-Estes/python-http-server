@@ -31,6 +31,7 @@ def main():
       response_body = request_headers["User-Agent"]
       content_length = len(response_body.encode())
       response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {content_length}\r\n\r\n{response_body}".encode()
+      client_socket.sendall(response)
     elif request_target.split("/")[1:][0] == "echo":
       return_string = request_target.split("/")[1:][1]
       content_length = len(return_string.encode())
