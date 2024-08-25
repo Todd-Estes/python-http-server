@@ -36,8 +36,9 @@ def handle_client(client_socket):
     elif request_target.split("/")[1:][0] == "files":
       # file_path = request_target.split("/")[1:][0]
       file_name = request_target.split("/")[1:][1]
+      file_path = f"/tmp/{file_name}"
       print (f"/tmp/{file_name}")
-      if os.path.isfile(f"tmp/{file_name}"):
+      if os.path.isfile(f"/tmp/{file_name}"):
         with open(file_path, 'r') as file:
           content = file.read()
         print(content)
