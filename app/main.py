@@ -41,9 +41,15 @@ def handle_client(client_socket):
       if os.path.isfile(f"/tmp/{file_name}"):
         with open(file_path, 'r') as file:
           content = file.read()
-        print(content)
+        print(f"File found:{content}")
+        content_length = len(content.encode())
+        print(content_length)
+        client_response = f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {content_length}\r\n\r\n{content}".encode()
+        print(client_response)
+        client_socket.sendall(client_response)
       else:
         print("Requested file does not exist")
+        client_socket.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
     else:
       client_socket.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
     
