@@ -2,12 +2,7 @@ import socket
 import io
 import threading
 
-def run_server():
-    print("Logs from your program will appear here!")
-
-    server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
-    client_socket, address = server_socket.accept()
-
+def handle_client(client_socket):
     # Create a file-like object from the socket
     request_file = client_socket.makefile('rb')
 
@@ -40,8 +35,21 @@ def run_server():
       client_socket.sendall(response)
     else:
       client_socket.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
+    
+    client_socket.close()
+
+def run_server():
+  print("Logs from your program will appear here!")
+  server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
+  print("Server is running on port 4221...")
+
+  while True:
+    client_socket, address = server_socket.accept()
+    print(f"Accepted connection from {address}")
+
+    # Create a new thread for each client connection
+    client_thread = threading.Thread(target=handle_client, args=(client_socket,))
+    client_thread.start()
 
 if __name__ == "__main__":
-    server_thread = threading.Thread(target=run_server())
-    server_thread.start()
-    server_thread.join()
+  run_server()
