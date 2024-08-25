@@ -1,6 +1,7 @@
 import socket
 import threading
 import os
+import sys
 
 def handle_client(client_socket):
     # Create a file-like object from the socket
@@ -34,11 +35,13 @@ def handle_client(client_socket):
       response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {content_length}\r\n\r\n{return_string}".encode()
       client_socket.sendall(response)
     elif request_target.split("/")[1:][0] == "files":
-      # file_path = request_target.split("/")[1:][0]
+      file_folder = sys.argv[2]
       file_name = request_target.split("/")[1:][1]
-      file_path = f"/tmp/{file_name}"
-      print (f"/tmp/{file_name}")
-      if os.path.isfile(f"/tmp/{file_name}"):
+      file_path = f"{file_folder}{file_name}"
+      print (f"FILE PATH: {file_path}")
+      print(sys.argv[2])
+
+      if os.path.isfile(file_path):
         with open(file_path, 'r') as file:
           content = file.read()
         print(f"File found:{content}")
