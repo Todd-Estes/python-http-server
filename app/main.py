@@ -52,14 +52,14 @@ def handle_client(client_socket):
         content_length = len(content.encode())
 
         client_response = f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {content_length}\r\n\r\n{content}".encode()
-
         client_socket.sendall(client_response)
       else:
         print("Requested file does not exist")
-        client_socket.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
+        response = b"HTTP/1.1 404 Not Found\r\n\r\n"
     else:
       client_socket.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
-    
+
+    client_socket.sendall(response)
     client_socket.close()
 
 def run_server():
