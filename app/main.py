@@ -27,7 +27,7 @@ def handle_client(client_socket):
       # print(request_headers["Content-Length"].decode('utf-8'))
     elif request_targb"HTTP/1.1 200 OK\r\n\r\n"et == "/":
       response = b"HTTP/1.1 200 OK\r\n\r\n" # .encode() at end of string acts same as 'b' prefix
-      client_socket.sendall(response) # .encode() at end of string acts same as 'b' prefix
+      client_socket.sendall(response)
     elif request_target == "/user-agent":
       response_body = request_headers["User-Agent"]
       content_length = len(response_body.encode())
@@ -50,9 +50,9 @@ def handle_client(client_socket):
           content = file.read()
         print(f"File found:{content}")
         content_length = len(content.encode())
-        print(content_length)
+
         client_response = f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {content_length}\r\n\r\n{content}".encode()
-        print(client_response)
+
         client_socket.sendall(client_response)
       else:
         print("Requested file does not exist")
